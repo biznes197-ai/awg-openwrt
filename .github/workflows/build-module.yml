@@ -71,15 +71,10 @@ jobs:
   build:
     name: "v${{ matrix.build_env.tag }} - ${{ matrix.build_env.pkgarch}} :: ${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}} build"
     runs-on: ubuntu-latest
-    # Строку 'needs: generate-config' мы удалили
+    needs: generate-config
     strategy:
       matrix:
-        build_env:
-          - tag: "SNAPSHOT"
-            pkgarch: "aarch64_cortex-a53"
-            target: "mediatek"
-            subtarget: "filogic"
-            vermagic: "60d938adcb727697d3015e4285d4c290"
+        build_env: ${{ fromJson(needs.generate-config.outputs.job-config) }}
       fail-fast: false
 
     steps:
